@@ -14,11 +14,11 @@ import {rstrip} from 'util.rstrip';
 
 const pkg = require('./package.json');
 
-interface IEnvType {
+export interface IEnvType {
 	[key: string]: string;
 }
 
-let envType: IEnvType = {
+export let envType: IEnvType = {
 	DEV: 'development',
 	TST: 'testing',
 	PRD: 'production'
