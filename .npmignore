@@ -17,5 +17,3 @@ test.js
 test.d.ts
 
 *.js.map
-jsdoc.json
-gulpfile.js
