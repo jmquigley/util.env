@@ -49,6 +49,7 @@ describe('Executing test suite', () => {
 		assert(env.isDevelopment());
 		assert(!env.isTesting());
 		assert(!env.isProduction());
+		assert(env.mode === env.envType.DEV);
 		assert(typeof env.version === 'string');
 		assert(regex.test(env.version));
 	});
@@ -60,6 +61,7 @@ describe('Executing test suite', () => {
 		assert(!env.isDevelopment());
 		assert(env.isTesting());
 		assert(!env.isProduction());
+		assert(env.mode === env.envType.TST);
 		assert(typeof env.version === 'string');
 		assert(regex.test(env.version));
 	});
@@ -71,6 +73,7 @@ describe('Executing test suite', () => {
 		assert(!env.isDevelopment());
 		assert(!env.isTesting());
 		assert(env.isProduction());
+		assert(env.mode === env.envType.PRD);
 		assert(typeof env.version === 'string');
 		assert(regex.test(env.version));
 	});

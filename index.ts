@@ -24,7 +24,7 @@ export let envType: IEnvType = {
 	PRD: 'production'
 };
 
-let mode = envType.DEV;
+export let mode = envType.DEV;
 if (process.argv.indexOf('--development') !== -1) {
 	mode = envType.DEV;
 } else if (process.argv.indexOf('--testing') !== -1) {
