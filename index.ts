@@ -8,11 +8,13 @@
 'use strict';
 
 import * as proc from 'child_process';
+import * as path from 'path';
 import {SemVer} from 'semver';
 import {popd, pushd} from 'util.chdir';
 import {rstrip} from 'util.rstrip';
 
-const pkg = require('./package.json');
+/** The package.json file of the module that imports this module */
+const pkg = require(path.join(process.cwd(), 'package.json'));
 
 export interface IEnvType {
 	[key: string]: string;
@@ -25,10 +27,13 @@ export let envType: IEnvType = {
 };
 
 export let mode = envType.DEV;
+export let branch = 'develop';
 if (process.argv.indexOf('--development') !== -1) {
 	mode = envType.DEV;
+	branch = 'develop';
 } else if (process.argv.indexOf('--testing') !== -1) {
 	mode = envType.TST;
+	branch = 'master';
 } else if (process.argv.indexOf('--production') !== -1) {
 	mode = envType.PRD;
 }
@@ -70,21 +75,22 @@ export function isProduction() {
  *     develop-r05_b0
  *
  * When this is a production environment type, then the semver from the package
- * is used for major/minor parts of the version.  The number of revisions for
- * that branch are used for the incremental part.
+ * is used to create the version label.
  *
  * @returns {string} a string that represnets the
  */
 export let version: string = (() => {
 	pushd(process.cwd());
-	let branch = rstrip(proc.execSync('git rev-parse --abbrev-ref HEAD').toString()) || 'master';
 	let revisionCount = rstrip(proc.execSync('git rev-list --no-merges --count HEAD').toString()) || 0;
 	let buildNumber = process.env.BUILD_NUMBER || 0;
 	popd();
 
 	if (mode === envType.PRD) {
 		let ver = new SemVer(pkg.version);
-		return `${ver.major}.${ver.minor}.${revisionCount}`;
+		let s: string = `${ver.major}.${ver.minor}.${ver.patch}`;
+		branch = `v${s}`;
+
+		return s;
 	}
 
 	return `${branch}-r${revisionCount}_b${buildNumber}`;
