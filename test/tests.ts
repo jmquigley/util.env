@@ -1,10 +1,10 @@
 'use strict';
 
-import * as _ from 'lodash';
 import * as assert from 'assert';
+import * as fs from 'fs-extra';
+import * as _ from 'lodash';
 import {Fixture} from 'util.fixture';
 import {debug} from './helpers';
-import * as fs from 'fs-extra';
 
 let saveArgs = _.cloneDeep(process.argv);
 

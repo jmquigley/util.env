@@ -18,8 +18,8 @@
   "dependencies": {
     "semver": "5.3.0",
     "util.chdir": "0.0.21",
-    "util.pkgwrap": "0.0.17",
-    "util.rstrip": "0.0.13"
+    "util.pkgwrap": "0.0.18",
+    "util.rstrip": "0.0.14"
   },
   "devDependencies": {
     "@types/fs-extra": "2.0.0",
