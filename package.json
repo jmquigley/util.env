@@ -1,6 +1,6 @@
 {
   "name": "util.env",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "Manages environment type and versioning for a project.",
   "private": false,
