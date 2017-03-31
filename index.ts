@@ -98,10 +98,12 @@ export let version: string = (() => {
 
 /*
  * Prints debugging information about this environment to the console.
+ * @param [log] {Object} a reference to the logging interface where the
+ * messages will be written.  By default it is written to the console.
 */
-export function show() {
-	console.log('Mode: ' + mode);
-	console.log('Version: ' + version);
-	console.log('Branch: ' + branch);
-	console.log('Root: ' + process.cwd());
+export function show(log = console.log) {
+	log('Mode: ' + mode);
+	log('Version: ' + version);
+	log('Branch: ' + branch);
+	log('Root: ' + process.cwd());
 }
