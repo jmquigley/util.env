@@ -1,20 +1,15 @@
-# util.env [![Build Status](https://travis-ci.org/jmquigley/util.env.svg?branch=master)](https://travis-ci.org/jmquigley/util.env) [![tslint code style](https://img.shields.io/badge/code_style-TSlint-5ed9c7.svg)](https://palantir.github.io/tslint/) [![NPM](https://img.shields.io/npm/v/util.env.svg)](https://www.npmjs.com/package/util.env) [![Coverage Status](https://coveralls.io/repos/github/jmquigley/util.env/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/util.env?branch=master)
+# util.env [![Build Status](https://travis-ci.org/jmquigley/util.env.svg?branch=master)](https://travis-ci.org/jmquigley/util.env) [![tslint code style](https://img.shields.io/badge/code_style-TSlint-5ed9c7.svg)](https://palantir.github.io/tslint/) [![Test Runner](https://img.shields.io/badge/testing-ava-blue.svg)](https://github.com/avajs/ava) [![NPM](https://img.shields.io/npm/v/util.env.svg)](https://www.npmjs.com/package/util.env) [![Coverage Status](https://coveralls.io/repos/github/jmquigley/util.env/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/util.env?branch=master)
 
 > Manages environment type and version strings for a project.
 
 This module contains helper functions for interacting with the runtime environment for an application to determine they type of environment.  The application that uses this script will have three types of environments:
- 
+
 - Development
 - Testing
 - Production
 
 
 ## Installation
-
-To install as a global package:
-```
-$ npm install --global util.env
-```
 
 To install as an application dependency:
 ```
@@ -34,11 +29,12 @@ This module is generally used during the build process under CI to identify the 
 - `--testing`
 - `--production`
 
-It exposes three functions that can be used within the build:
+It exposes four functions that can be used within the build:
 
 - `isDevelopment()` - the '--development' flag was passed.
 - `isTesting()` - the '--testing' flag was passed
 - `isProduction()` - the '--production' flag was passed
+- `show()` - prints debug information to the console.
 
 The use of this module also exposes the `version` string.  When this module is included it will determine the type and build the corresponding version string.  When the environment is development or testing the string is:
 

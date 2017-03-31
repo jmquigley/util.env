@@ -81,13 +81,13 @@ export function isProduction() {
  */
 export let version: string = (() => {
 	pushd(process.cwd());
-	let revisionCount = rstrip(proc.execSync('git rev-list --no-merges --count HEAD').toString()) || 0;
-	let buildNumber = process.env.BUILD_NUMBER || 0;
+	const revisionCount = rstrip(proc.execSync('git rev-list --no-merges --count HEAD').toString()) || 0;
+	const buildNumber = process.env.BUILD_NUMBER || 0;
 	popd();
 
 	if (mode === envType.PRD) {
-		let ver = new SemVer(pkg.version);
-		let s: string = `${ver.major}.${ver.minor}.${ver.patch}`;
+		const ver = new SemVer(pkg.version);
+		const s: string = `${ver.major}.${ver.minor}.${ver.patch}`;
 		branch = `v${s}`;
 
 		return s;
@@ -95,3 +95,13 @@ export let version: string = (() => {
 
 	return `${branch}-r${revisionCount}_b${buildNumber}`;
 })();
+
+/*
+ * Prints debugging information about this environment to the console.
+*/
+export function show() {
+	console.log('Mode: ' + mode);
+	console.log('Version: ' + version);
+	console.log('Branch: ' + branch);
+	console.log('Root: ' + process.cwd());
+}

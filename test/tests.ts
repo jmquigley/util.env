@@ -1,15 +1,12 @@
 'use strict';
 
-import * as assert from 'assert';
-import * as fs from 'fs-extra';
+import test from 'ava';
 import * as _ from 'lodash';
-import {Fixture} from 'util.fixture';
-import {debug} from './helpers';
 
-let saveArgs = _.cloneDeep(process.argv);
+const saveArgs = _.cloneDeep(process.argv);
 
 /**
- * This regex defins a pattern that validates the build version
+ * This regex defines a pattern that validates the build version
  * string.
  *
  * {branch}-r{revision count}_b{build number}
@@ -25,56 +22,52 @@ let saveArgs = _.cloneDeep(process.argv);
  *
  * @type {RegExp}
  */
-let regex = /.*-r\d+_b\d+|\d+\.\d+\.\d+/;
+const regex = /.*-r\d+_b\d+|\d+\.\d+\.\d+/;
 
-describe('Executing test suite', () => {
+test.beforeEach(t => {
+	process.argv = _.cloneDeep(saveArgs);
+	delete require.cache[require.resolve('../index')];
+	t.pass();
+});
 
-	after(() => {
-		debug('final cleanup: test_artifacts');
-		let directories = Fixture.cleanup();
-		directories.forEach((directory: string) => {
-			assert(!fs.existsSync(directory));
-		});
-	});
+test('Executing test for development environment', t => {
+	process.argv.push('--development');
+	const env = require('../index');
 
-	beforeEach(() => {
-		process.argv = _.cloneDeep(saveArgs);
-		delete require.cache[require.resolve('../index')];
-	});
+	env.show();
 
-	it('Executing test for development environment', () => {
-		process.argv.push('--development');
-		let env = require('../index');
+	t.true(env.isDevelopment());
+	t.false(env.isTesting());
+	t.false(env.isProduction());
+	t.is(env.mode, env.envType.DEV);
+	t.is(typeof env.version, 'string');
+	t.true(regex.test(env.version));
+});
 
-		assert(env.isDevelopment());
-		assert(!env.isTesting());
-		assert(!env.isProduction());
-		assert(env.mode === env.envType.DEV);
-		assert(typeof env.version === 'string');
-		assert(regex.test(env.version));
-	});
+test('Executing test for testing environment', t => {
+	process.argv.push('--testing');
+	const env = require('../index');
 
-	it('Executing test for testing environment', () => {
-		process.argv.push('--testing');
-		let env = require('../index');
+	env.show();
 
-		assert(!env.isDevelopment());
-		assert(env.isTesting());
-		assert(!env.isProduction());
-		assert(env.mode === env.envType.TST);
-		assert(typeof env.version === 'string');
-		assert(regex.test(env.version));
-	});
+	t.false(env.isDevelopment());
+	t.true(env.isTesting());
+	t.false(env.isProduction());
+	t.is(env.mode, env.envType.TST);
+	t.is(typeof env.version, 'string');
+	t.true(regex.test(env.version));
+});
 
-	it('Executing test for production environment', () => {
-		process.argv.push('--production');
-		let env = require('../index');
+test('Executing test for production environment', t => {
+	process.argv.push('--production');
+	const env = require('../index');
 
-		assert(!env.isDevelopment());
-		assert(!env.isTesting());
-		assert(env.isProduction());
-		assert(env.mode === env.envType.PRD);
-		assert(typeof env.version === 'string');
-		assert(regex.test(env.version));
-	});
+	env.show();
+
+	t.false(env.isDevelopment());
+	t.false(env.isTesting());
+	t.true(env.isProduction());
+	t.is(env.mode, env.envType.PRD);
+	t.is(typeof env.version, 'string');
+	t.true(regex.test(env.version));
 });
