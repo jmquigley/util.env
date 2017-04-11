@@ -17,21 +17,21 @@
   },
   "dependencies": {
     "semver": "5.3.0",
-    "util.chdir": "0.0.22",
+    "util.chdir": "0.0.23",
     "util.pkgwrap": "0.0.20",
-    "util.rstrip": "0.0.14"
+    "util.rstrip": "0.0.15"
   },
   "devDependencies": {
     "@types/fs-extra": "2.0.0",
-    "@types/lodash": "^4.14.61",
+    "@types/lodash": "^4.14.62",
     "@types/node": "^7.0.12",
     "@types/semver": "^5.3.31",
-    "ava": "^0.18.2",
+    "ava": "^0.19.1",
     "coveralls": "^2.13.0",
     "fs-extra": "^2.1.2",
     "lodash": "^4.17.4",
     "nyc": "^10.2.0",
-    "tslint": "^5.0.0",
+    "tslint": "^5.1.0",
     "typescript": "^2.2.2"
   },
   "main": "./index.js",
