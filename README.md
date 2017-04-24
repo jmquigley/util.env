@@ -36,6 +36,8 @@ It exposes four functions that can be used within the build:
 - `isProduction()` - the '--production' flag was passed
 - `show()` - prints debug information to the console.
 
+The type can also be set using the environment variable `ENV_MODE`.  This is used to set the default value for the exposed `mode` variable.
+
 The use of this module also exposes the `version` string.  When this module is included it will determine the type and build the corresponding version string.  When the environment is development or testing the string is:
 
 ```

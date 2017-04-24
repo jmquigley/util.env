@@ -26,7 +26,7 @@ export let envType: IEnvType = {
 	PRD: 'production'
 };
 
-export let mode = envType.DEV;
+export let mode = process.env.ENV_MODE ? process.env.ENV_MODE : envType.DEV;
 export let branch = 'develop';
 if (process.argv.indexOf('--development') !== -1) {
 	mode = envType.DEV;

@@ -22,7 +22,7 @@ const saveArgs = _.cloneDeep(process.argv);
  *
  * @type {RegExp}
  */
-const regex = /.*-r\d+_b\d+|\d+\.\d+\.\d+/;
+const r = /.*-r\d+_b\d+|\d+\.\d+\.\d+/;
 
 test.beforeEach(t => {
 	process.argv = _.cloneDeep(saveArgs);
@@ -41,7 +41,7 @@ test('Executing test for development environment', t => {
 	t.false(env.isProduction());
 	t.is(env.mode, env.envType.DEV);
 	t.is(typeof env.version, 'string');
-	t.true(regex.test(env.version));
+	t.regex(env.version, r);
 });
 
 test('Executing test for testing environment', t => {
@@ -55,7 +55,7 @@ test('Executing test for testing environment', t => {
 	t.false(env.isProduction());
 	t.is(env.mode, env.envType.TST);
 	t.is(typeof env.version, 'string');
-	t.true(regex.test(env.version));
+	t.regex(env.version, r);
 });
 
 test('Executing test for production environment', t => {
@@ -69,5 +69,16 @@ test('Executing test for production environment', t => {
 	t.true(env.isProduction());
 	t.is(env.mode, env.envType.PRD);
 	t.is(typeof env.version, 'string');
-	t.true(regex.test(env.version));
+	t.regex(env.version, r);
+});
+
+test('Executing test using environment variable test', t => {
+	process.env['ENV_MODE'] = 'blah';
+	const env = require('../index');
+
+	env.show();
+	t.false(env.isDevelopment());
+	t.false(env.isTesting());
+	t.false(env.isProduction());
+	t.is(env.mode, 'blah');
 });
