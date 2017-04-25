@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "semver": "5.3.0",
-    "util.chdir": "0.0.24",
+    "util.chdir": "0.0.25",
     "util.pkgwrap": "0.0.26",
-    "util.rstrip": "0.0.16"
+    "util.rstrip": "0.0.17"
   },
   "devDependencies": {
     "@types/fs-extra": "2.1.0",
-    "@types/lodash": "^4.14.62",
+    "@types/lodash": "^4.14.63",
     "@types/node": "^7.0.13",
     "@types/semver": "^5.3.31",
     "ava": "^0.19.1",
