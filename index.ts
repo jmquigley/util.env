@@ -7,10 +7,6 @@
 
 'use strict';
 
-// This is exported so the testing client can access this environment
-// instance and reset variables for testing
-export const process = require('process');
-
 import * as proc from 'child_process';
 import * as fs from 'fs-extra';
 import {SemVer} from 'semver';

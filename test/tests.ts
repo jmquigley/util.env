@@ -32,10 +32,10 @@ test.beforeEach(t => {
 	delete require.cache[require.resolve('../index')];
 
 	env = require('../index');
-	delete env.process.env.ENV_MODE;
+	delete process.env.ENV_MODE;
 
 	t.truthy(env);
-	t.falsy(env.process.env.ENV_MODE);
+	t.falsy(process.env.env_mode);
 });
 
 test('Executing test for development environment', t => {
