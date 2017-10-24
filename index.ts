@@ -14,7 +14,7 @@ import {popd, pushd} from 'util.chdir';
 import {rstrip} from 'util.rstrip';
 
 /** The package.json file of the module that imports this module */
-const pkg = require(path.join(process.cwd(), 'package.json'));
+const pkg = require(path.resolve(process.cwd(), 'package.json'));
 
 export interface IEnvType {
 	[key: string]: string;
