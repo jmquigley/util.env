@@ -7,6 +7,10 @@
 
 'use strict';
 
+// This is exported so the testing client can access this environment
+// instance and reset variables for testing
+export const process = require('process');
+
 import * as proc from 'child_process';
 import * as fs from 'fs-extra';
 import {SemVer} from 'semver';
@@ -14,51 +18,85 @@ import {popd, pushd} from 'util.chdir';
 import {join} from 'util.join';
 import {rstrip} from 'util.rstrip';
 
-export interface EnvType {
-	[key: string]: string;
+export enum EnvType {
+	development = 'development',
+	test = 'test',
+	production = 'production'
 }
 
-export let envType: EnvType = {
-	DEV: 'development',
-	TST: 'test',
-	PRD: 'production'
-};
+export const root = process.cwd();
 
-export let mode = process.env.ENV_MODE ? process.env.ENV_MODE : envType.DEV;
-export let branch = 'develop';
-if (process.argv.indexOf('--development') !== -1) {
-	mode = envType.DEV;
-	branch = 'develop';
-} else if (process.argv.indexOf('--testing') !== -1 || process.argv.indexOf('--test') !== -1) {
-	mode = envType.TST;
-	branch = 'master';
-} else if (process.argv.indexOf('--production') !== -1) {
-	mode = envType.PRD;
+/**
+ * Retrieves a string that represents the name of a branch in git for a
+ * mode.
+ *
+ * - development => "develop"
+ * - test => "master"
+ * - production => "v##.##.##"
+ */
+export function getBranch(): string {
+	const mode: string = getMode();
+
+	if (mode === EnvType.test) {
+		return 'master';
+	} else if (mode === EnvType.production) {
+		return `v${getVersion()}`;
+	}
+
+	return 'develop';
 }
-export let root = process.cwd();
+
+/**
+ * Retrieves the environment mode type.  There are three types:
+ *
+ * - development
+ * - test
+ * - production
+ *
+ * It will first try to get the type from the NODE_ENV variable.  If this
+ * is not found, then it will look for the a command line argument for the
+ * type.  If this is not found, then the default of "development" is
+ * returned.
+ */
+export function getMode(): string {
+	if (process.env.ENV_MODE == null) {
+		process.env.ENV_MODE = EnvType.development;
+		if (process.argv.indexOf('--testing') !== -1 || process.argv.indexOf('--test') !== -1) {
+			process.env.ENV_MODE = EnvType.test;
+		} else if (process.argv.indexOf('--production') !== -1) {
+			process.env.ENV_MODE = EnvType.production;
+		}
+	} else {
+		if (!(process.env.ENV_MODE in EnvType)) {
+			process.env.ENV_MODE = EnvType.development;
+		}
+	}
+
+	return EnvType[process.env.ENV_MODE];
+}
 
 /**
  * Checks if the environment is development.
  * @returns {boolean} returns true if development, otherwise false.
  */
-export function isDevelopment() {
-	return mode === envType.DEV;
+export function isDevelopment(): boolean {
+	return getMode() === EnvType.development;
 }
 
 /**
  * Checks if the environment is testing.
  * @returns {boolean} returns true if testing, otherwise false.
  */
-export function isTesting() {
-	return mode === envType.TST;
+export function isTesting(): boolean {
+	return getMode() === EnvType.test;
 }
 
 /**
  * Checks if the environment is production.
  * @returns {boolean} returns true if production, otherwise false.
  */
-export function isProduction() {
-	return mode === envType.PRD;
+export function isProduction(): boolean {
+	return getMode() === EnvType.production;
 }
 
 /**
@@ -78,7 +116,7 @@ export function isProduction() {
  *
  * @returns {string} a string that represnets the
  */
-export let version: string = (() => {
+export function getVersion() {
 
 	const pkgfile = join(root, 'package.json');
 	let pkg = {version: '0.0.0'};
@@ -92,16 +130,14 @@ export let version: string = (() => {
 	const buildNumber = process.env.BUILD_NUMBER || 0;
 	popd();
 
-	if (mode === envType.PRD) {
+	if (getMode() === EnvType.production) {
 		const ver = new SemVer(pkg.version);
 		const s: string = `${ver.major}.${ver.minor}.${ver.patch}`;
-		branch = `v${s}`;
-
 		return s;
 	}
 
-	return `${branch}-r${revisionCount}_b${buildNumber}`;
-})();
+	return `${getBranch()}-r${revisionCount}_b${buildNumber}`;
+}
 
 /*
  * Prints debugging information about this environment to the console.
@@ -109,8 +145,8 @@ export let version: string = (() => {
  * messages will be written.  By default it is written to the console.
 */
 export function show(log = console.log) {
-	log('Mode: ' + mode);
-	log('Version: ' + version);
-	log('Branch: ' + branch);
+	log('Mode: ' + getMode());
+	log('Version: ' + getVersion());
+	log('Branch: ' + getBranch());
 	log('Root: ' + root);
 }

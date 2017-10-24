@@ -1,9 +1,12 @@
 'use strict';
 
+const debug = require('debug')('util.env.test');
+
 import test from 'ava';
 import * as _ from 'lodash';
 
 const saveArgs = _.cloneDeep(process.argv);
+let env: any = null;
 
 /**
  * This regex defines a pattern that validates the build version
@@ -27,62 +30,65 @@ const r = /.*-r\d+_b\d+|\d+\.\d+\.\d+/;
 test.beforeEach(t => {
 	process.argv = _.cloneDeep(saveArgs);
 	delete require.cache[require.resolve('../index')];
-	t.pass();
+
+	env = require('../index');
+	delete env.process.env.ENV_MODE;
+
+	t.truthy(env);
+	t.falsy(env.process.env.ENV_MODE);
 });
 
 test('Executing test for development environment', t => {
 	process.argv.push('--development');
-	const env = require('../index');
+	env.show(debug);
 
-	env.show();
-
+	t.is(env.getMode(), env.EnvType.development);
 	t.true(env.isDevelopment());
 	t.false(env.isTesting());
 	t.false(env.isProduction());
-	t.is(env.mode, env.envType.DEV);
-	t.is(typeof env.version, 'string');
-	t.is(typeof env.root, 'string');
-	t.regex(env.version, r);
+	t.is(env.getBranch(), 'develop');
+
+	const version = env.getVersion();
+	t.is(typeof version, 'string');
+	t.regex(version, r);
 });
 
 test('Executing test for testing environment', t => {
 	process.argv.push('--testing');
-	const env = require('../index');
+	env.show(debug);
 
-	env.show();
-
+	t.is(env.getMode(), env.EnvType.test);
 	t.false(env.isDevelopment());
 	t.true(env.isTesting());
 	t.false(env.isProduction());
-	t.is(env.mode, env.envType.TST);
-	t.is(typeof env.version, 'string');
-	t.is(typeof env.root, 'string');
-	t.regex(env.version, r);
+	t.is(env.getBranch(), 'master');
+
+	const version = env.getVersion();
+	t.is(typeof version, 'string');
+	t.regex(version, r);
 });
 
 test('Executing test for production environment', t => {
 	process.argv.push('--production');
-	const env = require('../index');
+	env.show(debug);
 
-	env.show();
-
+	t.is(env.getMode(), env.EnvType.production);
 	t.false(env.isDevelopment());
 	t.false(env.isTesting());
 	t.true(env.isProduction());
-	t.is(env.mode, env.envType.PRD);
-	t.is(typeof env.version, 'string');
-	t.is(typeof env.root, 'string');
-	t.regex(env.version, r);
+	t.regex(env.getBranch(), /v\d*.\d*.\d*/);
+
+	const version = env.getVersion();
+	t.is(typeof version, 'string');
+	t.regex(version, r);
 });
 
 test('Executing test using environment variable test', t => {
 	process.env['ENV_MODE'] = 'blah';
-	const env = require('../index');
+	env.show(debug);
 
-	env.show();
-	t.false(env.isDevelopment());
+	t.true(env.isDevelopment());
 	t.false(env.isTesting());
 	t.false(env.isProduction());
-	t.is(typeof env.root, 'string');
-	t.is(env.mode, 'blah');
+	t.is(env.getMode(), env.EnvType.development);
 });
