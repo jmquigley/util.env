@@ -18,11 +18,12 @@
   "dependencies": {
     "semver": "5.4.1",
     "util.chdir": "0.0.30",
+    "util.join": "^0.0.14",
     "util.pkgwrap": "0.0.71",
     "util.rstrip": "0.0.26"
   },
   "devDependencies": {
-    "@types/fs-extra": "4.0.2",
+    "@types/fs-extra": "^4.0.2",
     "@types/lodash": "^4.14.78",
     "@types/node": "^8.0.46",
     "@types/semver": "^5.4.0",

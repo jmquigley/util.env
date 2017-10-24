@@ -41,6 +41,7 @@ test('Executing test for development environment', t => {
 	t.false(env.isProduction());
 	t.is(env.mode, env.envType.DEV);
 	t.is(typeof env.version, 'string');
+	t.is(typeof env.root, 'string');
 	t.regex(env.version, r);
 });
 
@@ -55,6 +56,7 @@ test('Executing test for testing environment', t => {
 	t.false(env.isProduction());
 	t.is(env.mode, env.envType.TST);
 	t.is(typeof env.version, 'string');
+	t.is(typeof env.root, 'string');
 	t.regex(env.version, r);
 });
 
@@ -69,6 +71,7 @@ test('Executing test for production environment', t => {
 	t.true(env.isProduction());
 	t.is(env.mode, env.envType.PRD);
 	t.is(typeof env.version, 'string');
+	t.is(typeof env.root, 'string');
 	t.regex(env.version, r);
 });
 
@@ -80,5 +83,6 @@ test('Executing test using environment variable test', t => {
 	t.false(env.isDevelopment());
 	t.false(env.isTesting());
 	t.false(env.isProduction());
+	t.is(typeof env.root, 'string');
 	t.is(env.mode, 'blah');
 });

@@ -8,21 +8,19 @@
 'use strict';
 
 import * as proc from 'child_process';
-import * as path from 'path';
+import * as fs from 'fs-extra';
 import {SemVer} from 'semver';
 import {popd, pushd} from 'util.chdir';
+import {join} from 'util.join';
 import {rstrip} from 'util.rstrip';
 
-/** The package.json file of the module that imports this module */
-const pkg = require(path.resolve(process.cwd(), 'package.json'));
-
-export interface IEnvType {
+export interface EnvType {
 	[key: string]: string;
 }
 
-export let envType: IEnvType = {
+export let envType: EnvType = {
 	DEV: 'development',
-	TST: 'testing',
+	TST: 'test',
 	PRD: 'production'
 };
 
@@ -31,12 +29,13 @@ export let branch = 'develop';
 if (process.argv.indexOf('--development') !== -1) {
 	mode = envType.DEV;
 	branch = 'develop';
-} else if (process.argv.indexOf('--testing') !== -1) {
+} else if (process.argv.indexOf('--testing') !== -1 || process.argv.indexOf('--test') !== -1) {
 	mode = envType.TST;
 	branch = 'master';
 } else if (process.argv.indexOf('--production') !== -1) {
 	mode = envType.PRD;
 }
+export let root = process.cwd();
 
 /**
  * Checks if the environment is development.
@@ -80,6 +79,14 @@ export function isProduction() {
  * @returns {string} a string that represnets the
  */
 export let version: string = (() => {
+
+	const pkgfile = join(root, 'package.json');
+	let pkg = {version: '0.0.0'};
+
+	if (fs.existsSync(pkgfile)) {
+		pkg = JSON.parse(fs.readFileSync(pkgfile, 'utf8'));
+	}
+
 	pushd(process.cwd());
 	const revisionCount = rstrip(proc.execSync('git rev-list --no-merges --count HEAD').toString()) || 0;
 	const buildNumber = process.env.BUILD_NUMBER || 0;
@@ -105,5 +112,5 @@ export function show(log = console.log) {
 	log('Mode: ' + mode);
 	log('Version: ' + version);
 	log('Branch: ' + branch);
-	log('Root: ' + process.cwd());
+	log('Root: ' + root);
 }

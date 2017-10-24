@@ -44,7 +44,7 @@
   dependencies:
     arrify "^1.0.1"
 
-"@types/fs-extra@4.0.2":
+"@types/fs-extra@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-4.0.2.tgz#7b9b1bbf85962cbe029b5a83c9b530d7c75af3ba"
   dependencies:
@@ -3785,6 +3785,20 @@ util.chdir@0.0.30:
     fs-extra "^4.0.1"
     util.pkgwrap "0.0.68"
 
+util.home@0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/util.home/-/util.home-0.0.19.tgz#68233019565d2f77ac08e3c82758518bbff1c062"
+  dependencies:
+    util.pkgwrap "0.0.68"
+    util.toolbox "0.0.47"
+
+util.join@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/util.join/-/util.join-0.0.14.tgz#6cbd3f24d22bda54ebc2a6c2b8f99f3618b7e047"
+  dependencies:
+    util.home "0.0.19"
+    util.pkgwrap "0.0.68"
+
 util.pkgwrap@0.0.68:
   version "0.0.68"
   resolved "https://registry.yarnpkg.com/util.pkgwrap/-/util.pkgwrap-0.0.68.tgz#e258de014366ed04ee488072afcf1c0ccd5777d4"
@@ -3820,6 +3834,15 @@ util.rstrip@0.0.26:
   resolved "https://registry.yarnpkg.com/util.rstrip/-/util.rstrip-0.0.26.tgz#09e0e3cd90d71622dc985bab08e2b6d66b42e99e"
   dependencies:
     util.pkgwrap "0.0.68"
+
+util.toolbox@0.0.47:
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/util.toolbox/-/util.toolbox-0.0.47.tgz#0e2498c16c1892db8a36d017d147ce7f64fad036"
+  dependencies:
+    fs-extra "^4.0.1"
+    util.pkgwrap "0.0.68"
+    util.rstrip "0.0.26"
+    uuid "^3.1.0"
 
 uuid@^3.0.0, uuid@^3.1.0:
   version "3.1.0"
