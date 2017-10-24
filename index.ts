@@ -7,6 +7,8 @@
 
 'use strict';
 
+const debug = require('debug')('util.env');
+
 import * as proc from 'child_process';
 import * as fs from 'fs-extra';
 import {SemVer} from 'semver';
@@ -55,20 +57,18 @@ export function getBranch(): string {
  * returned.
  */
 export function getMode(): string {
-	if (process.env.ENV_MODE == null) {
-		process.env.ENV_MODE = EnvType.development;
+	debug('process.env.NODE_ENV: %s', process.env.NODE_ENV);
+
+	if (process.env.NODE_ENV == null) {
+		process.env.NODE_ENV = EnvType.development;
 		if (process.argv.indexOf('--testing') !== -1 || process.argv.indexOf('--test') !== -1) {
-			process.env.ENV_MODE = EnvType.test;
+			process.env.NODE_ENV = EnvType.test;
 		} else if (process.argv.indexOf('--production') !== -1) {
-			process.env.ENV_MODE = EnvType.production;
-		}
-	} else {
-		if (!(process.env.ENV_MODE in EnvType)) {
-			process.env.ENV_MODE = EnvType.development;
+			process.env.NODE_ENV = EnvType.production;
 		}
 	}
 
-	return EnvType[process.env.ENV_MODE];
+	return EnvType[process.env.NODE_ENV] || EnvType.development;
 }
 
 /**

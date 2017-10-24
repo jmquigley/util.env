@@ -29,10 +29,10 @@ const r = /.*-r\d+_b\d+|\d+\.\d+\.\d+/;
 
 test.beforeEach(t => {
 	process.argv = _.cloneDeep(saveArgs);
-	delete require.cache[require.resolve('../index')];
+	delete require.cache[require.resolve('./index')];
 
-	env = require('../index');
-	delete process.env.ENV_MODE;
+	env = require('./index');
+	delete process.env.NODE_ENV;
 
 	t.truthy(env);
 	t.falsy(process.env.env_mode);
@@ -40,7 +40,7 @@ test.beforeEach(t => {
 
 test('Executing test for development environment', t => {
 	process.argv.push('--development');
-	env.show(debug);
+	env.show();
 
 	t.is(env.getMode(), env.EnvType.development);
 	t.true(env.isDevelopment());
@@ -84,7 +84,7 @@ test('Executing test for production environment', t => {
 });
 
 test('Executing test using environment variable test', t => {
-	process.env['ENV_MODE'] = 'blah';
+	process.env['NODE_ENV'] = 'blah';
 	env.show(debug);
 
 	t.true(env.isDevelopment());
