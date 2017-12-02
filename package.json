@@ -3,6 +3,8 @@
   "version": "0.0.23",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "Manages environment type and versioning for a project.",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -13,38 +15,36 @@
     "url": "https://github.com/jmquigley/util.env/issues"
   },
   "engines": {
-    "node": ">=7.5"
+    "node": ">=7.x"
   },
   "dependencies": {
     "semver": "5.4.1",
-    "util.chdir": "0.0.31",
-    "util.join": "^0.0.15",
-    "util.pkgwrap": "0.0.73",
-    "util.rstrip": "0.0.28"
+    "util.chdir": "0.0.32",
+    "util.join": "^0.0.16",
+    "util.rstrip": "0.0.31"
   },
   "devDependencies": {
     "@types/fs-extra": "^4.0.5",
-    "@types/lodash": "^4.14.85",
+    "@types/lodash": "^4.14.86",
     "@types/node": "^8.0.53",
     "@types/semver": "^5.4.0",
-    "ava": "^0.23.0",
+    "ava": "^0.24.0",
     "coveralls": "^3.0.0",
     "debug": "^3.1.0",
     "fs-extra": "^4.0.2",
     "lodash": "^4.17.4",
     "nyc": "^11.3.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.2"
   },
-  "main": "./index.js",
-  "types": "./index.d.ts",
   "scripts": {
-    "all": "yarn install && yarn run clean && yarn run lint && yarn run build && yarn test && yarn run report",
-    "build": "pkgwrap --build",
+    "all": "yarn install && yarn run build && yarn test && yarn run report",
+    "build": "yarn run clean && yarn run lint && pkgwrap --build",
     "clean": "pkgwrap --clean",
     "coverage": "pkgwrap --coverage",
     "lint": "pkgwrap --lint",
-    "postinstall": "pkgwrap --postinstall",
+    "preinstall": "yarn global add util.pkgwrap",
+    "prepublishOnly": "yarn run all",
     "report": "pkgwrap --reporting",
     "test": "pkgwrap --testing --ava"
   }
