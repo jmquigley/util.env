@@ -19,14 +19,14 @@
   },
   "dependencies": {
     "semver": "5.4.1",
-    "util.chdir": "0.0.32",
-    "util.join": "^0.0.16",
-    "util.rstrip": "0.0.31"
+    "util.chdir": "0.0.33",
+    "util.join": "^0.0.17",
+    "util.rstrip": "0.0.32"
   },
   "devDependencies": {
     "@types/fs-extra": "^4.0.5",
-    "@types/lodash": "^4.14.86",
-    "@types/node": "^8.0.53",
+    "@types/lodash": "^4.14.87",
+    "@types/node": "^8.0.54",
     "@types/semver": "^5.4.0",
     "ava": "^0.24.0",
     "coveralls": "^3.0.0",
@@ -35,7 +35,8 @@
     "lodash": "^4.17.4",
     "nyc": "^11.3.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.2"
+    "typescript": "^2.6.2",
+    "util.pkgwrap": "^0.0.88"
   },
   "scripts": {
     "all": "yarn install && yarn run build && yarn test && yarn run report",
@@ -43,7 +44,6 @@
     "clean": "pkgwrap --clean",
     "coverage": "pkgwrap --coverage",
     "lint": "pkgwrap --lint",
-    "preinstall": "yarn global add util.pkgwrap",
     "prepublishOnly": "yarn run all",
     "report": "pkgwrap --reporting",
     "test": "pkgwrap --testing --ava"
