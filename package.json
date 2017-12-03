@@ -1,6 +1,6 @@
 {
   "name": "util.env",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "Manages environment type and versioning for a project.",
   "main": "./index.js",
