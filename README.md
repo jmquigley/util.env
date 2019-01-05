@@ -1,6 +1,12 @@
-# util.env [![Build Status](https://travis-ci.org/jmquigley/util.env.svg?branch=master)](https://travis-ci.org/jmquigley/util.env) [![tslint code style](https://img.shields.io/badge/code_style-TSlint-5ed9c7.svg)](https://palantir.github.io/tslint/) [![Test Runner](https://img.shields.io/badge/testing-ava-blue.svg)](https://github.com/avajs/ava) [![NPM](https://img.shields.io/npm/v/util.env.svg)](https://www.npmjs.com/package/util.env) [![Coverage Status](https://coveralls.io/repos/github/jmquigley/util.env/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/util.env?branch=master)
+# util.env
 
 > Manages environment type and version strings for a project.
+
+[![Build Status](https://travis-ci.org/jmquigley/util.env.svg?branch=master)](https://travis-ci.org/jmquigley/util.env)
+[![tslint code style](https://img.shields.io/badge/code_style-TSlint-5ed9c7.svg)](https://palantir.github.io/tslint/)
+[![Test Runner](https://img.shields.io/badge/testing-jest-blue.svg)](https://facebook.github.io/jest/)
+[![NPM](https://img.shields.io/npm/v/util.env.svg)](https://www.npmjs.com/package/util.env)
+[![Coverage Status](https://coveralls.io/repos/github/jmquigley/util.env/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/util.env?branch=master)
 
 This module contains helper functions for interacting with the runtime environment for an application to determine they type of environment.  The application that uses this script will have three types of environments:
 
