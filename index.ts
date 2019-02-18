@@ -5,21 +5,21 @@
  * @module env
  */
 
-'use strict';
+"use strict";
 
-const debug = require('debug')('util.env');
+const debug = require("debug")("util.env");
 
-import * as proc from 'child_process';
-import * as fs from 'fs-extra';
-import {SemVer} from 'semver';
-import {popd, pushd} from 'util.chdir';
-import {join} from 'util.join';
-import {rstrip} from 'util.rstrip';
+import * as proc from "child_process";
+import * as fs from "fs-extra";
+import {SemVer} from "semver";
+import {popd, pushd} from "util.chdir";
+import {join} from "util.join";
+import {rstrip} from "util.rstrip";
 
 export enum EnvType {
-	development = 'development',
-	test = 'test',
-	production = 'production'
+	development = "development",
+	test = "test",
+	production = "production"
 }
 
 export const root = process.cwd();
@@ -36,12 +36,12 @@ export function getBranch(): string {
 	const mode: string = getMode();
 
 	if (mode === EnvType.test) {
-		return 'master';
+		return "master";
 	} else if (mode === EnvType.production) {
 		return `v${getVersion()}`;
 	}
 
-	return 'develop';
+	return "develop";
 }
 
 /**
@@ -57,13 +57,16 @@ export function getBranch(): string {
  * returned.
  */
 export function getMode(): string {
-	debug('process.env.NODE_ENV: %s', process.env.NODE_ENV);
+	debug("process.env.NODE_ENV: %s", process.env.NODE_ENV);
 
 	if (process.env.NODE_ENV == null) {
 		process.env.NODE_ENV = EnvType.development;
-		if (process.argv.indexOf('--testing') !== -1 || process.argv.indexOf('--test') !== -1) {
+		if (
+			process.argv.indexOf("--testing") !== -1 ||
+			process.argv.indexOf("--test") !== -1
+		) {
 			process.env.NODE_ENV = EnvType.test;
-		} else if (process.argv.indexOf('--production') !== -1) {
+		} else if (process.argv.indexOf("--production") !== -1) {
 			process.env.NODE_ENV = EnvType.production;
 		}
 	}
@@ -113,16 +116,18 @@ export function isProduction(): boolean {
  * @returns {string} a string that represnets the
  */
 export function getVersion() {
-
-	const pkgfile = join(root, 'package.json');
-	let pkg = {version: '0.0.0'};
+	const pkgfile = join(root, "package.json");
+	let pkg = {version: "0.0.0"};
 
 	if (fs.existsSync(pkgfile)) {
-		pkg = JSON.parse(fs.readFileSync(pkgfile, 'utf8'));
+		pkg = JSON.parse(fs.readFileSync(pkgfile, "utf8"));
 	}
 
 	pushd(process.cwd());
-	const revisionCount = rstrip(proc.execSync('git rev-list --no-merges --count HEAD').toString()) || 0;
+	const revisionCount =
+		rstrip(
+			proc.execSync("git rev-list --no-merges --count HEAD").toString()
+		) || 0;
 	const buildNumber = process.env.BUILD_NUMBER || 0;
 	popd();
 
@@ -139,10 +144,10 @@ export function getVersion() {
  * Prints debugging information about this environment to the console.
  * @param [log] {Object} a reference to the logging interface where the
  * messages will be written.  By default it is written to the console.
-*/
+ */
 export function show(log = console.log) {
-	log('Mode: ' + getMode());
-	log('Version: ' + getVersion());
-	log('Branch: ' + getBranch());
-	log('Root: ' + root);
+	log("Mode: " + getMode());
+	log("Version: " + getVersion());
+	log("Branch: " + getBranch());
+	log("Root: " + root);
 }

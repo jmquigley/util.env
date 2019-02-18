@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const debug = require('debug')('util.env.test');
+const debug = require("debug")("util.env.test");
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 const saveArgs = _.cloneDeep(process.argv);
 let env: any = null;
@@ -28,47 +28,47 @@ const r = /.*-r\d+_b\d+|\d+\.\d+\.\d+/;
 
 beforeEach(() => {
 	process.argv = _.cloneDeep(saveArgs);
-	jest.resetModules()
+	jest.resetModules();
 
-	env = require('../index');
+	env = require("../index");
 	delete process.env.NODE_ENV;
 
-	expect(env).toBeTruthy()
-	expect(process.env.env_mode).toBeFalsy()
+	expect(env).toBeTruthy();
+	expect(process.env.env_mode).toBeFalsy();
 });
 
-test('Executing test for development environment', () => {
-	process.argv.push('--development');
+test("Executing test for development environment", () => {
+	process.argv.push("--development");
 	env.show();
 
 	expect(env.getMode()).toBe(env.EnvType.development);
 	expect(env.isDevelopment()).toBe(true);
 	expect(env.isTesting()).toBe(false);
 	expect(env.isProduction()).toBe(false);
-	expect(env.getBranch()).toBe('develop');
+	expect(env.getBranch()).toBe("develop");
 
 	const version = env.getVersion();
-	expect(typeof version).toBe('string');
+	expect(typeof version).toBe("string");
 	expect(version).toMatch(r);
 });
 
-test('Executing test for testing environment', () => {
-	process.argv.push('--testing');
+test("Executing test for testing environment", () => {
+	process.argv.push("--testing");
 	env.show(debug);
 
 	expect(env.getMode()).toBe(env.EnvType.test);
 	expect(env.isDevelopment()).toBe(false);
 	expect(env.isTesting()).toBe(true);
 	expect(env.isProduction()).toBe(false);
-	expect(env.getBranch()).toBe('master');
+	expect(env.getBranch()).toBe("master");
 
 	const version = env.getVersion();
-	expect(typeof version).toBe('string');
+	expect(typeof version).toBe("string");
 	expect(version).toMatch(r);
 });
 
-test('Executing test for production environment', () => {
-	process.argv.push('--production');
+test("Executing test for production environment", () => {
+	process.argv.push("--production");
 	env.show(debug);
 
 	expect(env.getMode()).toBe(env.EnvType.production);
@@ -78,12 +78,12 @@ test('Executing test for production environment', () => {
 	expect(env.getBranch()).toMatch(/v\d*.\d*.\d*/);
 
 	const version = env.getVersion();
-	expect(typeof version).toBe('string');
+	expect(typeof version).toBe("string");
 	expect(version).toMatch(r);
 });
 
-test('Executing test using environment variable test', () => {
-	process.env['NODE_ENV'] = 'blah';
+test("Executing test using environment variable test", () => {
+	process.env["NODE_ENV"] = "blah";
 	env.show(debug);
 
 	expect(env.isDevelopment()).toBe(true);
