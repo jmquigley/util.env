@@ -30,7 +30,7 @@ beforeEach(() => {
 	process.argv = _.cloneDeep(saveArgs);
 	jest.resetModules();
 
-	env = require("../index");
+	env = require("./index");
 	delete process.env.NODE_ENV;
 
 	expect(env).toBeTruthy();
