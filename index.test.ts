@@ -1,5 +1,3 @@
-"use strict";
-
 const debug = require("debug")("util.env.test");
 
 import * as _ from "lodash";
