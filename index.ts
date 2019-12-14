@@ -9,10 +9,10 @@ const debug = require("debug")("util.env");
 
 import * as proc from "child_process";
 import * as fs from "fs-extra";
-import { SemVer } from "semver";
-import { popd, pushd } from "util.chdir";
-import { join } from "util.join";
-import { rstrip } from "util.rstrip";
+import {SemVer} from "semver";
+import {popd, pushd} from "util.chdir";
+import {join} from "util.join";
+import {rstrip} from "util.rstrip";
 
 export enum EnvType {
 	development = "development",
@@ -115,7 +115,7 @@ export function isProduction(): boolean {
  */
 export function getVersion() {
 	const pkgfile = join(root, "package.json");
-	let pkg = { version: "0.0.0" };
+	let pkg = {version: "0.0.0"};
 
 	if (fs.existsSync(pkgfile)) {
 		pkg = JSON.parse(fs.readFileSync(pkgfile, "utf8"));
